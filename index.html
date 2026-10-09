@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="奶蛙出道计划——一只奶蛙的30天网红经营模拟，你的选择决定它的结局。">
+<title>奶蛙出道计划</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ 首页 ============ -->
+  <section id="screen-home" class="screen screen-home active">
+    <div class="home-deco home-deco-1">齁</div>
+    <div class="home-deco home-deco-2">哈</div>
+    <div class="home-deco home-deco-3">哈</div>
+    <div class="home-card">
+      <img class="home-frog" src="assets/frog-face.png" alt="奶蛙" onerror="this.classList.add('img-missing')">
+      <h1 class="game-title">奶蛙出道计划</h1>
+      <p class="game-subtitle">点一下就狂笑的黄色迷因，<br>这次能不能红，全看你这个经纪人。</p>
+      <div class="rules-box">
+        <p class="rules-title">怎么玩</p>
+        <ul>
+          <li>30 天运营旅程，共 <b>10 个回合 × 2 次行动</b>，约 5 分钟一局。</li>
+          <li>在短视频、直播、训练、商务、休息、玩梗之间取舍。</li>
+          <li>热度高不一定是好事——留意路人缘、精力和争议。</li>
+          <li>不同选择通向 <b>10 种命运结局</b>，含两个隐藏结局。</li>
+        </ul>
+      </div>
+      <button class="btn btn-primary btn-big" id="btn-start">开始出道</button>
+      <button class="btn btn-ghost" id="btn-gallery-home">结局图鉴 <span id="gallery-count-home"></span></button>
+      <p class="storage-note" id="storage-note" hidden></p>
+    </div>
+    <p class="footer-note">网络迷因同人原型 · 素材来源与授权状态见游戏配置登记 · 仅供娱乐</p>
+  </section>
+
+  <!-- ============ 运营页 ============ -->
+  <section id="screen-game" class="screen screen-game">
+    <header class="game-header">
+      <div class="header-line">
+        <span class="phase-tag" id="phase-tag">第一阶段</span>
+        <span class="day-tag" id="day-tag">第 1 天</span>
+      </div>
+      <div class="progress-pips" id="progress-pips"></div>
+      <div class="resource-row">
+        <span class="res-chip res-fans">粉丝 <b id="res-fans">0</b></span>
+        <span class="res-chip res-cash">现金 <b id="res-cash">¥0</b></span>
+        <span class="res-chip res-mcn" id="res-mcn" hidden>MCN 已签约</span>
+      </div>
+    </header>
+
+    <div class="attrs-panel" id="attrs-panel"></div>
+
+    <div class="stage" id="stage">
+      <div class="stage-bg" id="stage-bg"></div>
+      <div class="stage-props" id="stage-props"></div>
+      <img class="stage-frog" id="stage-frog" src="assets/frog-main.jpg" alt="奶蛙" onerror="this.classList.add('img-missing')">
+      <div class="speech hidden" id="speech"></div>
+      <div class="delta-layer" id="delta-layer"></div>
+    </div>
+
+    <div class="result-box" id="result-box">
+      <p class="result-text" id="result-text">奶蛙正等着你的第一个安排。选一个运营动作吧，经纪人！</p>
+    </div>
+
+    <div class="action-area">
+      <p class="actions-left" id="actions-left">本回合还剩 2 次行动</p>
+      <div class="action-grid" id="action-grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ 阶段过渡层 ============ -->
+  <div class="overlay" id="overlay-phase" hidden>
+    <div class="modal modal-phase">
+      <p class="phase-skip" id="phase-skip">几天后……</p>
+      <h2 class="phase-title" id="phase-title"></h2>
+      <ul class="phase-summary" id="phase-summary"></ul>
+      <button class="btn btn-primary" id="btn-phase-next">继续</button>
+    </div>
+  </div>
+
+  <!-- ============ 事件 / 抉择层 ============ -->
+  <div class="overlay" id="overlay-event" hidden>
+    <div class="modal modal-event">
+      <div class="event-scene" id="event-scene">📣</div>
+      <p class="event-cat" id="event-cat"></p>
+      <h2 class="event-title" id="event-title"></h2>
+      <p class="event-desc" id="event-desc"></p>
+      <div class="event-options" id="event-options"></div>
+    </div>
+  </div>
+
+  <!-- ============ 结局页 ============ -->
+  <section id="screen-ending" class="screen screen-ending">
+    <div class="ending-card" id="ending-card">
+      <div class="ending-img-wrap">
+        <div class="ending-img-bg" id="ending-img-bg"></div>
+        <img class="ending-img" id="ending-img" alt="结局场景" onerror="this.classList.add('img-missing')">
+        <span class="ending-route" id="ending-route"></span>
+      </div>
+      <div class="ending-body">
+        <h2 class="ending-name" id="ending-name"></h2>
+        <p class="ending-tagline" id="ending-tagline"></p>
+        <p class="ending-summary" id="ending-summary"></p>
+        <div class="ending-stats" id="ending-stats"></div>
+        <p class="ending-brand">《奶蛙出道计划》</p>
+        <p class="ending-cta">截个图发给朋友，看看他们能带出什么结局 →</p>
+        <div class="ending-actions">
+          <button class="btn btn-primary" id="btn-replay">再玩一次</button>
+          <button class="btn btn-secondary" id="btn-share">分享结局卡</button>
+          <button class="btn btn-ghost" id="btn-gallery-ending">结局图鉴</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 图鉴弹层 ============ -->
+  <div class="overlay" id="overlay-gallery" hidden>
+    <div class="modal modal-gallery">
+      <div class="gallery-head">
+        <h2>结局图鉴</h2>
+        <button class="icon-btn" id="btn-gallery-close">✕</button>
+      </div>
+      <p class="gallery-progress" id="gallery-progress"></p>
+      <div class="gallery-grid" id="gallery-grid"></div>
+      <button class="btn btn-primary btn-wide" id="btn-gallery-start">开始新的一局</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+</div>
+
+<script src="js/config/attributes.js"></script>
+<script src="js/config/scenes.js"></script>
+<script src="js/config/actions.js"></script>
+<script src="js/config/phases.js"></script>
+<script src="js/config/events.js"></script>
+<script src="js/config/endings.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/card.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
